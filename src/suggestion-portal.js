@@ -57,7 +57,7 @@ class SuggestionPortal extends React.Component {
     this.setCallbackSuggestion()
   }
 
-  onKeyUp = (e, change) => {
+  onKeyUp = (e, change, next) => {
     const match = this.matchCapture();
     if (match) {
       if (e.keyCode !== DOWN_ARROW_KEY &&
@@ -78,14 +78,15 @@ class SuggestionPortal extends React.Component {
         }
       }
     }
+
+    next();
   }
 
-  onKeyDown = (e, change) => {
+  onKeyDown = (e, editor, next) => {
 
     const match = this.matchCapture();
 
     if (match) {
-
       const { filteredSuggestions } = this.state
       if (filteredSuggestions.length > 0) {
         // Prevent default return/enter key press when portal is open
@@ -94,10 +95,10 @@ class SuggestionPortal extends React.Component {
           this.closePortal()
           this.selectedIndex = (this.selectedIndex || 0)
           this.setCallbackSuggestion();
-          
+
           // Handle enter
           if (this.props.callback.onEnter && this.props.callback.suggestion !== undefined) {
-            this.props.callback.onEnter(this.props.callback.suggestion, change)
+            this.props.callback.onEnter(this.props.callback.suggestion, editor)
 
             return false;
           }
@@ -123,8 +124,10 @@ class SuggestionPortal extends React.Component {
         }
       }
     }
+
+    next();
   }
- 
+
   matchCapture = () => {
     const { value, capture } = this.props
 

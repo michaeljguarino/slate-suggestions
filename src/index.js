@@ -1,24 +1,28 @@
 import React from 'react'
 import Portal from './suggestion-portal'
- 
+
 function SuggestionsPlugin(opts) {
-   
+
   const callback = {}
 
-  function onKeyDown(e, change, editor) {
+  function onKeyDown(e, editor, next) {
     callback.editor = editor
 
     if (callback.onKeyDown) {
-       return callback.onKeyDown(e, change)
+       return callback.onKeyDown(e, change, next)
     }
+
+    next();
   }
-  
-  function onKeyUp(e, change, editor) {
+
+  function onKeyUp(e, editor, next) {
     callback.editor = editor
 
     if (callback.onKeyUp) {
-       return callback.onKeyUp(e, change)
+       return callback.onKeyUp(e, change, next)
     }
+
+    next();
   }
 
   return {
