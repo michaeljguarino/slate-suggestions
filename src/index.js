@@ -9,7 +9,7 @@ function SuggestionsPlugin(opts) {
     callback.editor = editor
 
     if (callback.onKeyDown) {
-       return callback.onKeyDown(e, change, next)
+       return callback.onKeyDown(e, editor, next)
     }
 
     next();
@@ -19,7 +19,7 @@ function SuggestionsPlugin(opts) {
     callback.editor = editor
 
     if (callback.onKeyUp) {
-       return callback.onKeyUp(e, change, next)
+       return callback.onKeyUp(e, editor, next)
     }
 
     next();
