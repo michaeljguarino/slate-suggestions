@@ -6,8 +6,7 @@ class SuggestionItem extends React.Component {
     this.props.closePortal()
 
     const { editor, suggestion, appendSuggestion } = this.props
-    const change =  editor.value.change();
-    appendSuggestion(suggestion, change)
+    appendSuggestion(suggestion, editor)
 
     editor.onChange(change)
   }
