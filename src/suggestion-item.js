@@ -8,7 +8,7 @@ class SuggestionItem extends React.Component {
     const { editor, suggestion, appendSuggestion } = this.props
     appendSuggestion(suggestion, editor)
 
-    editor.onChange(change)
+    editor.onChange(editor)
   }
 
   onMouseEnter = () =>
