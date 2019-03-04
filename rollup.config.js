@@ -21,6 +21,7 @@ export default {
       sourcemap: true
     }
   ],
+  external: ['react-click-outside', 'react-portal'],
   plugins: [
     external(),
     postcss({

@@ -57,5 +57,8 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "react-click-outside": "tj/react-click-outside",
+    "react-portal": "^4.2.0"
+  }
 }

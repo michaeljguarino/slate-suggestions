@@ -11,9 +11,9 @@ import {
   ESCAPE_KEY,
   ENTER_KEY
 } from './constants'
+import ClickOutside from 'react-click-outside'
 
 class SuggestionPortal extends React.Component {
-
   state = {
     filteredSuggestions: []
   }
@@ -35,6 +35,8 @@ class SuggestionPortal extends React.Component {
 
   constructor(props) {
     super()
+    this.isOpen = false
+    this.justOpened = false
     this.portalContainer = React.createRef();
     props.callback.onKeyDown = this.onKeyDown
     props.callback.onKeyUp = this.onKeyUp
@@ -51,6 +53,7 @@ class SuggestionPortal extends React.Component {
 
   setCallbackSuggestion = () => {
     if (this.state.filteredSuggestions.length) {
+
       this.props.callback.suggestion = this.state.filteredSuggestions[this.selectedIndex]
     } else {
       this.props.callback.suggestion = undefined
@@ -60,9 +63,7 @@ class SuggestionPortal extends React.Component {
   setFilteredSuggestions = (filteredSuggestions) => {
     this.setState({
       filteredSuggestions
-    })
-
-    this.setCallbackSuggestion()
+    }, this.setCallbackSuggestion)
   }
 
   onKeyUp = (e, change, next) => {
@@ -100,7 +101,7 @@ class SuggestionPortal extends React.Component {
       if (filteredSuggestions.length > 0) {
         // Prevent default return/enter key press when portal is open
         if (e.keyCode === ESCAPE_KEY) {
-          this.portalContainer.current.removeAttribute('style')
+          this.hidePortal()
           return false
         } else if (e.keyCode === ENTER_KEY) {
           e.preventDefault();
@@ -195,6 +196,7 @@ class SuggestionPortal extends React.Component {
     const match = this.matchCapture();
 
     if (match) {
+      this.showPortal()
       const rect = position()
       if (rect) {
         this.portalContainer.current.style.display = 'block'
@@ -202,10 +204,28 @@ class SuggestionPortal extends React.Component {
         this.portalContainer.current.style.top = `${rect.top + window.scrollY}px` // eslint-disable-line no-mixed-operators
         this.portalContainer.current.style.left = `${rect.left + window.scrollX}px` // eslint-disable-line no-mixed-operators
       }
-    }
-    else if (match === undefined) {
-      this.portalContainer.current.removeAttribute('style')
+    } else if (match === undefined) {
+      this.hidePortal()
       return
+    }
+  }
+
+  showPortal = (rect) => {
+    if (!this.isOpen) {
+      this.isOpen = true
+      if (!this.justOpened) {
+        this.justOpened = true
+        setTimeout(() => {
+          this.justOpened = false
+        }, 100)
+      }
+    }
+  }
+
+  hidePortal = () => {
+    if (this.isOpen) {
+      this.portalContainer.current.removeAttribute('style')
+      this.isOpen = false
     }
   }
 
@@ -216,8 +236,16 @@ class SuggestionPortal extends React.Component {
     const match = this.matchCapture();
 
     if (!match) {
-      this.portalContainer.current.removeAttribute('style')
+      this.hidePortal()
       return
+    }
+  }
+
+  clickOutside = () => {
+    if (this.isOpen) {
+      if (!this.justOpened) {
+        this.hidePortal()
+      }
     }
   }
 
@@ -230,23 +258,25 @@ class SuggestionPortal extends React.Component {
     const { filteredSuggestions } = this.state
 
     return (
-      <Portal isOpened node={document && document.getElementById('root')}  >
-        <div className="suggestion-portal" ref={this.portalContainer}>
-          <ul>
-            {filteredSuggestions.map((suggestion, index) =>
-              <SuggestionItem
-                key={suggestion.key}
-                index={index}
-                suggestion={suggestion}
-                selectedIndex={this.selectedIndex}
-                setSelectedIndex={this.setSelectedIndex}
-                appendSuggestion={this.props.callback.onEnter}
-                closePortal={this.closePortal}
-                editor={this.props.callback.editor}
-              />
-            )}
-          </ul>
-        </div>
+      <Portal isOpened node={document && document.body}  >
+        <ClickOutside onClickOutside={this.clickOutside}>
+          <div className="suggestion-portal" ref={this.portalContainer}>
+            <ul>
+              {filteredSuggestions.map((suggestion, index) =>
+                <SuggestionItem
+                  key={suggestion.key}
+                  index={index}
+                  suggestion={suggestion}
+                  selectedIndex={this.selectedIndex}
+                  setSelectedIndex={this.setSelectedIndex}
+                  appendSuggestion={this.props.callback.onEnter}
+                  closePortal={this.closePortal}
+                  editor={this.props.callback.editor}
+                />
+              )}
+            </ul>
+          </div>
+        </ClickOutside>
       </Portal>
     )
   }
