@@ -8,6 +8,7 @@ import {
   UP_ARROW_KEY,
   DOWN_ARROW_KEY,
   RESULT_SIZE,
+  ESCAPE_KEY,
   ENTER_KEY
 } from './constants'
 
@@ -69,7 +70,8 @@ class SuggestionPortal extends React.Component {
     if (match) {
       if (e.keyCode !== DOWN_ARROW_KEY &&
         e.keyCode !== UP_ARROW_KEY &&
-        e.keyCode !== ENTER_KEY) {
+        e.keyCode !== ENTER_KEY &&
+        e.keyCode !== ESCAPE_KEY) {
 
         this.selectedIndex = 0
         const newFilteredSuggestions = this.getFilteredSuggestions(e.key)
@@ -97,7 +99,10 @@ class SuggestionPortal extends React.Component {
       const { filteredSuggestions } = this.state
       if (filteredSuggestions.length > 0) {
         // Prevent default return/enter key press when portal is open
-        if (e.keyCode === ENTER_KEY) {
+        if (e.keyCode === ESCAPE_KEY) {
+          this.portalContainer.current.removeAttribute('style')
+          return false
+        } else if (e.keyCode === ENTER_KEY) {
           e.preventDefault();
           this.closePortal()
           this.selectedIndex = (this.selectedIndex || 0)
