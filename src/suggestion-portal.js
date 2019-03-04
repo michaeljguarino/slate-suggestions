@@ -19,10 +19,17 @@ class SuggestionPortal extends React.Component {
 
   componentDidMount = () => {
     this.adjustPosition()
+    window.addEventListener('resize', ::this.adjustPosition)
+    window.addEventListener('scroll', ::this.adjustPosition)
   }
 
   componentDidUpdate = () => {
     this.adjustPosition()
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', ::this.adjustPosition)
+    window.removeEventListener('scroll', ::this.adjustPosition)
   }
 
   constructor(props) {
@@ -178,7 +185,6 @@ class SuggestionPortal extends React.Component {
   }
 
   adjustPosition = () => {
-
     if (!this.portalContainer.current) return
 
     const match = this.matchCapture();
