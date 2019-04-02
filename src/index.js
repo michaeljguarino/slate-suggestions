@@ -28,12 +28,17 @@ function SuggestionsPlugin(opts) {
   return {
     onKeyDown,
     onKeyUp,
-    SuggestionPortal: (props) =>
-      <Portal
-        {...props}
-        {...opts}
-        callback={callback}
-      />
+    SuggestionPortal: React.forwardRef((props, ref) => {
+      return (
+        <Portal
+          {...props}
+          {...opts}
+          ref={ref}
+          callback={callback}
+        />
+      )
+    })
+
   }
 }
 
