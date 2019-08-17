@@ -14,18 +14,19 @@ function position($node, offsetx, offsety) {
 
   if (document.selection) {
     const range = document.selection.createRange()
+    console.log(range)
     pos.left = range.offsetLeft + offsetx - nodeLeft
     pos.top = range.offsetTop + offsety - nodeTop
   } else if (window.getSelection) {
     const sel = window.getSelection()
     if (sel.rangeCount === 0) return null
     const range = sel.getRangeAt(0).cloneRange()
-
     try {
       range.setStart(range.startContainer, range.startOffset - 1)
     } catch (e) {}
 
     const rect = range.getBoundingClientRect()
+    console.log(rect)
 
     if (range.endOffset === 0 || range.toString() === '') {
       // first char of line

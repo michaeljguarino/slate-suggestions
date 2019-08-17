@@ -203,7 +203,8 @@ class SuggestionPortal extends React.Component {
         this.portalContainer.current.style.display = 'block'
         this.portalContainer.current.style.opacity = 1
         if (this.alignTop) {
-          this.portalContainer.current.style.bottom = `${window.height - (rect.top + window.scrollY)}px` // eslint-disable-line no-mixed-operators
+          let height = this.portalContainer.current.clientHeight
+          this.portalContainer.current.style.top = `${rect.top + window.scrollY - height}px` // eslint-disable-line no-mixed-operators
         } else {
           this.portalContainer.current.style.top = `${rect.top + window.scrollY}px` // eslint-disable-line no-mixed-operators
         }
