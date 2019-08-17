@@ -38,6 +38,7 @@ class SuggestionPortal extends React.Component {
     this.isOpen = false
     this.justOpened = false
     this.portalContainer = React.createRef();
+    this.alignTop = !!props.alignTop
     props.callback.onKeyDown = this.onKeyDown
     props.callback.onKeyUp = this.onKeyUp
     props.callback.onEnter = props.onEnter
@@ -201,7 +202,12 @@ class SuggestionPortal extends React.Component {
       if (rect) {
         this.portalContainer.current.style.display = 'block'
         this.portalContainer.current.style.opacity = 1
-        this.portalContainer.current.style.top = `${rect.top + window.scrollY}px` // eslint-disable-line no-mixed-operators
+        if (this.alignTop) {
+          this.portalContainer.current.style.bottom = `${window.height - (rect.top + window.scrollY)}px` // eslint-disable-line no-mixed-operators
+        } else {
+          this.portalContainer.current.style.top = `${rect.top + window.scrollY}px` // eslint-disable-line no-mixed-operators
+        }
+
         this.portalContainer.current.style.left = `${rect.left + window.scrollX}px` // eslint-disable-line no-mixed-operators
       }
     } else if (match === undefined) {

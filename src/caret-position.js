@@ -10,7 +10,7 @@ function position($node, offsetx, offsety) {
     nodeTop = $node.offsetTop
   }
 
-  const pos = { left: 0, top: 0 }
+  const pos = { left: 0, top: 0, bottom: 0 }
 
   if (document.selection) {
     const range = document.selection.createRange()
