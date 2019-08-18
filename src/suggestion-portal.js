@@ -234,7 +234,7 @@ class SuggestionPortal extends React.Component {
     if (this.isOpen) {
       this.portalContainer.current.removeAttribute('style')
       this.isOpen = false
-      this.props.onClose && this.props.onClose()
+
     }
   }
 
@@ -243,7 +243,7 @@ class SuggestionPortal extends React.Component {
     if (!this.portalContainer.current) return
 
     const match = this.matchCapture();
-
+    this.props.onClose && this.props.onClose()
     if (!match) {
       this.hidePortal()
       return
