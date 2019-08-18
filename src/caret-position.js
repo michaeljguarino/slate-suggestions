@@ -14,7 +14,6 @@ function position($node, offsetx, offsety) {
 
   if (document.selection) {
     const range = document.selection.createRange()
-    console.log(range)
     pos.left = range.offsetLeft + offsetx - nodeLeft
     pos.top = range.offsetTop + offsety - nodeTop
   } else if (window.getSelection) {
@@ -26,7 +25,6 @@ function position($node, offsetx, offsety) {
     } catch (e) {}
 
     const rect = range.getBoundingClientRect()
-    console.log(rect)
 
     if (range.endOffset === 0 || range.toString() === '') {
       // first char of line
