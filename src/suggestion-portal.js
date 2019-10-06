@@ -113,7 +113,7 @@ class SuggestionPortal extends React.Component {
           // Handle enter
           if (this.props.callback.onEnter && this.props.callback.suggestion !== undefined) {
             this.props.callback.onEnter(this.props.callback.suggestion, editor)
-
+            editor.onChange(editor)
             return false;
           }
         }
